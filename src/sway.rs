@@ -18,17 +18,13 @@ pub fn get_tree(conn: Arc<Mutex<Connection>>) -> Node {
 
 // All output nodes, focused or not
 pub fn get_all_output_nodes(conn: Arc<Mutex<Connection>>) -> Vec<Node> {
-    let mut output_nodes = vec![];
+    let mut output_nodes = Vec::default();
     let mut q = VecDeque::new();
     let root_node = get_tree(conn);
 
     q.push_back(root_node);
-
-    while !q.is_empty() {
-        // We can unwrap because we know the queue is not empty
-        let node = q.pop_back().unwrap();
-
-        // If we hav an output node
+    while let Some(node) = q.pop_back() {
+        // If we have an output node
         if (node.node_type == NodeType::Output) && !node.nodes.is_empty() {
             output_nodes.push(node.clone());
         }
@@ -38,6 +34,7 @@ pub fn get_all_output_nodes(conn: Arc<Mutex<Connection>>) -> Vec<Node> {
             q.push_back(child.clone());
         }
     }
+
     output_nodes
 }
 

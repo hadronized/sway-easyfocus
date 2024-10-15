@@ -42,6 +42,7 @@ fn handle_keypress(
                 Command::Focus => {
                     sway::focus(conn, con_id);
                 }
+
                 Command::Swap { focus } => {
                     sway::swap(conn.clone(), con_id);
 
